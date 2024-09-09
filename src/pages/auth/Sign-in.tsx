@@ -1,5 +1,7 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -8,7 +10,10 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 const signInForm = z.object({
-  email: z.string().email(),
+  email: z
+    .string()
+    .min(1, 'O e-mail é obrigatório.')
+    .email('Formato de e-mail inválido'),
 })
 
 type SignInFormType = z.infer<typeof signInForm>
@@ -17,8 +22,10 @@ export function SignIn() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SignInFormType>()
+    formState: { isSubmitting, errors },
+  } = useForm<SignInFormType>({
+    resolver: zodResolver(signInForm),
+  })
 
   async function handleSignIn(data: SignInFormType) {
     try {
@@ -35,6 +42,9 @@ export function SignIn() {
     <>
       <Helmet title="Login" />
       <div className="p-8">
+        <Button asChild className="absolute right-8 top-8" variant="ghost">
+          <Link to="/sign-up">Novo Estabelecimento</Link>
+        </Button>
         <div className="flex w-[350px] flex-col justify-center gap-6">
           <div className="flex flex-col gap-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
@@ -48,6 +58,11 @@ export function SignIn() {
             <div className="space-y-2">
               <Label htmlFor="email">Seu e-mail</Label>
               <Input id="email" type="email" {...register('email')} />
+              {errors.email && (
+                <span className="text-xs text-primary">
+                  {errors.email.message}
+                </span>
+              )}
             </div>
             <Button disabled={isSubmitting} className="w-full" type="submit">
               Acessar
