@@ -1,4 +1,14 @@
+import { Search, X } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 export function OrderTableFilters() {
   return (
@@ -7,6 +17,27 @@ export function OrderTableFilters() {
         <span className="text-sm font-semibold">Filtros:</span>
         <Input placeholder="ID do pedido" className="h-8 w-auto" />
         <Input placeholder="Nome do cliente" className="h-8 w-80" />
+        <Select defaultValue="all">
+          <SelectTrigger className="h-8 w-44">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos</SelectItem>
+            <SelectItem value="pending">Pendente</SelectItem>
+            <SelectItem value="canceled">Cancelado</SelectItem>
+            <SelectItem value="processing">Em preparo</SelectItem>
+            <SelectItem value="delivering">Em entrega</SelectItem>
+            <SelectItem value="delivered">Entregue</SelectItem>
+          </SelectContent>
+        </Select>
+        <Button type="submit" variant="secondary" size="sm">
+          <Search className="mr-2 h-4 w-4" />
+          Filtrar
+        </Button>
+        <Button type="reset" variant="outline" size="sm">
+          <X className="mr-2 h-4 w-4" />
+          Limpar
+        </Button>
       </form>
     </div>
   )
