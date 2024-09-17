@@ -83,6 +83,7 @@ export function PopularProductsChart() {
               nameKey="product"
               innerRadius={60}
               label={Label}
+              labelLine={false}
             >
               {data.map((entry, index) => (
                 <Cell
